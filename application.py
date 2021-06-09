@@ -78,7 +78,7 @@ def mysql_query(sql):
 
 #Function to display and import book details
 
-@app.route('/book',methods=['GET','POST'])
+@app.route('/',methods=['GET','POST'])
 def book():
 	bdata=mysql_query("SELECT * from books")
 	
@@ -430,11 +430,22 @@ def report():
 # For accessing the login page and to view book details use '/login' after the local host address 
 
 #---------------------------------------------------------------------------------------------
-
+#Function for Guest view
+@app.route('/login/',methods=['GET','POST'])
+def login():
+	if request.method=="POST":
+		if 'check' in request.form:
+			email=request.form['email']
+			data=mysql_query("SELECT member_id from members where member_email='{}'".format(email))
+			if data:
+				return redirect(url_for('checkbooks'))
+			else:
+				print("wrong data entered")
+	return render_template('login.html')
 
 
 #Function for showing book details for the guest view users
-@app.route("/checkbooks",methods=['GET','POST'])
+@app.route('/checkbooks',methods=['GET','POST'])
 def checkbooks():
 	bdata=mysql_query("SELECT * from books")
 	print(bdata)
