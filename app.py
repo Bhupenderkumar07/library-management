@@ -78,7 +78,7 @@ def mysql_query(sql):
 
 
 @app.route('/')
-def dashboard:
+def dashboard():
 	return render_template("dashboard.html")
 
 #Function to display and import book details
