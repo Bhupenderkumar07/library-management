@@ -432,7 +432,7 @@ def report():
 #---------------------------------------------------------------------------------------------
 
 #Function for Guest view
-@app.route("/login",methods=['GET','POST'])
+@app.route("/login/",methods=['GET','POST'])
 def login():
 	if request.method=="POST":
 		if 'check' in request.form:
