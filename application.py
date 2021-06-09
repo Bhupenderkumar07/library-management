@@ -1,9 +1,7 @@
 from flask import *
 from flaskext.mysql import MySQL
-from flask_mail import Mail, Message
 from random import *
 from datetime import *
-from flask_htmlmin import HTMLMIN
 from datetime import datetime
 from datetime import date
 import os
