@@ -142,7 +142,6 @@ def book():
 					
 					#flash is used to give notification or warning to the user by flashing the entered message with its category
 					flash('Books Data fetched Successfully','success')
-					connection.commit()
 				return redirect(url_for('book'))
 			except:
 				flash('Sufficient data was not found','warning')
