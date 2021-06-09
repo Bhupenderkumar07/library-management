@@ -431,18 +431,6 @@ def report():
 
 #---------------------------------------------------------------------------------------------
 
-#Function for Guest view
-@app.route("/login/",methods=['GET','POST'])
-def login():
-	if request.method=="POST":
-		if 'check' in request.form:
-			email=request.form['email']
-			data=mysql_query("SELECT member_id from members where member_email='{}'".format(email))
-			if data:
-				return redirect(url_for('checkbooks'))
-			else:
-				print("wrong data entered")
-	return render_template('login.html')
 
 
 #Function for showing book details for the guest view users
