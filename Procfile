@@ -1,1 +1,1 @@
-web: gunicorn frappe:app
+web: gunicorn app:app
