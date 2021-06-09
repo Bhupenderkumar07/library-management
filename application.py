@@ -13,18 +13,18 @@ import requests
 import json
 
 app = Flask(__name__,template_folder ='template')
-app.config['MINIFY_HTML'] = True
+
 
 
 app.secret_key = os.urandom(34)
 
-mysql = MySQL()
+
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = ''
 app.config['MYSQL_DATABASE_DB'] = 'frappe'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-mysql.init_app(app)
-connection = mysql.connect()
+mysql = MySQL(app)
+
 
 
 #--------------------------------------------------------------------------------------------------
@@ -121,6 +121,7 @@ def book():
 
 						#if the details does not exists in the database
 						if len(check)==0:
+							connection = mysql.connect()
 							cursor = connection.cursor()
 							#Using normal cursor connection instead of mysql function for escaping aphostrphes
 							#---------------------------------------------------------------------------------
@@ -184,6 +185,7 @@ def book():
 			treview=request.form['treview']
 			pdate=request.form['pdate']
 			pub=request.form['publisher']
+			connection = mysql.connect()
 			cursor = connection.cursor()
 			query="UPDATE books set title=%s,authors=%s,average_rating=%s,isbn=%s,isbn13=%s,language_code=%s,num_pages=%s,ratings_count=%s,text_reviews_count=%s,publication_date=%s,publisher=%s where book_id=%s"
 			values=(title,author,arating,isbn,isbn13,lcode,npage,rcount,treview,pdate,pub,bid)
