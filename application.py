@@ -76,10 +76,6 @@ def mysql_query(sql):
 
 #********************************************************************************************
 
-@app.route('/')
-def dashboard():
-	return render_template('dashboard.html')
-
 #Function to display and import book details
 
 @app.route('/book',methods=['GET','POST'])
