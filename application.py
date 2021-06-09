@@ -430,7 +430,7 @@ def report():
 
 #---------------------------------------------------------------------------------------------
 #Function for Guest view
-@app.route('/login/',methods=['GET','POST'])
+@app.route('/login_user',methods=['GET','POST'])
 def login():
 	if request.method=="POST":
 		if 'check' in request.form:
@@ -447,7 +447,6 @@ def login():
 @app.route('/checkbooks',methods=['GET','POST'])
 def checkbooks():
 	bdata=mysql_query("SELECT * from books")
-	print(bdata)
 	return render_template('checkbooks.html',bdata=bdata)
 
 
