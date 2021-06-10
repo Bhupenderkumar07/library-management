@@ -217,8 +217,13 @@ def member():
 	if request.method=="POST":
 		if 'del' in request.form:
 			mid=request.form['del']
-			mysql_query("DELETE from members where members.member_id={}".format(mid))
-			flash('Member Delete Successfully !','success')
+			check=mysql_query("SELECT book_id from transaction where member_id={} and return_date is Null".format(mid))
+			if len(check)==0:
+				mysql_query("DELETE from members where members.member_id={}".format(mid))
+				flash('Member Delete Successfully !','success')
+			else:
+				flash('Cannot Delete Member ! Issued book is not returned','danger')
+
 			return redirect(url_for('member'))
 
 		#----------------------------------------------------------------------------------------	
