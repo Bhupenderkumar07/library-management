@@ -80,11 +80,8 @@ def mysql_query(sql):
 @app.route('/',methods=['GET','POST'])
 def book():
 	bdata=mysql_query("SELECT * from books")
-	
 	if request.method=="POST":
-
 		#----------------------------------------------------------------------------------------
-	
 		#add button for importing data from api
 		if 'add' in request.form:
 			#using try-catch statement for catching any exception
@@ -102,14 +99,12 @@ def book():
 				page=no/20
 				bno=math.ceil(page)	
 				#----------------------------------------
-
 				#loop for importing data as per requirement and appending it into a list
 				for i in range(1,bno+1):
 					data=[]
 					req=requests.get("https://frappe.io/api/method/frappe-library?page={}&title={}&authors={}&isbn={}&publisher={}".format(i,title,author,isbn,pub))
 					data=req.json()
 					full_data.append(data)
-
 				#loop for iterating through the data fetched from the api
 				for x in full_data:
 					for i in range(0,no):
@@ -117,7 +112,6 @@ def book():
 						print(bid)
 						#checking if the imported value already exists in the database or not
 						check=mysql_query("SELECT book_id from books where book_id={}".format(bid))
-
 						#if the details does not exists in the database
 						if len(check)==0:
 							connection = mysql.connect()
@@ -125,54 +119,40 @@ def book():
 							#Using normal cursor connection instead of mysql function for escaping aphostrphes
 							#---------------------------------------------------------------------------------
 							sql="INSERT INTO books(book_id,title,authors,average_rating,isbn,isbn13,language_code,num_pages,ratings_count,text_reviews_count,publication_date,publisher) VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-							
 							#Date converted into yyyy-mm-dd fromat
 							time=datetime.strptime(x['message'][i]['publication_date'],'%m/%d/%Y')
-							
 							sqldt=(x['message'][i]['bookID'],x['message'][i]['title'],x['message'][i]['authors'],x['message'][i]['average_rating'],x['message'][i]['isbn'],x['message'][i]['isbn13'],x['message'][i]['language_code'],x['message'][i]['  num_pages'],x['message'][i]['ratings_count'],x['message'][i]['text_reviews_count'],time,x['message'][i]['publisher'])
 							cursor.execute(sql,sqldt)
 							connection.commit()
-						#-------------------------------------------------------------------------------------
-							
-						#Stock Management is done through the api data :- Depending of the repeated details
-						
+						#-------------------------------------------------------------------------------------			
+						#Stock Management is done through the api data :- Depending of the repeated details			
 						#If the details exists in the database
 						else:
 							#if the details exists then the stock of the book will be increamented by 1
 							mysql_query("UPDATE books set stock=stock+1 where book_id={}".format(bid))
 							mysql_query("UPDATE books set total=total+1 where book_id={}".format(bid))
-
-					
 					#flash is used to give notification or warning to the user by flashing the entered message with its category
 					flash('Books Data fetched Successfully','success')
 				return redirect(url_for('book'))
 			except:
 				flash('Sufficient data was not found','warning')
 				return redirect(url_for('book'))
-
-
 		#----------------------------------------------------------------------------------------		
-
 		#Del button for deleting data from database 
 		if 'del' in request.form:
 			bid=request.form['del']
 			#fetching return dates of issued books
 			tdata=mysql_query("SELECT return_date from transaction where book_id={}".format(bid))
 			#-------------------------------------
-
 			#if the book is not reuturned than its details cannot be deleted
 			if len(tdata)==0:
-				flash('Cannot Delete ! Book is Already Issued ','warning')
-			
+				flash('Cannot Delete ! Book is Already Issued ','warning')	
 			#if the book is returned then the details can be deleted	
 			else:
 				mysql_query("DELETE from books where book_id={}".format(bid))
-				flash('Book Data Deleted Successfully !','success')
-				
+				flash('Book Data Deleted Successfully !','success')		
 			return redirect(url_for('book'))
-
 		#----------------------------------------------------------------------------------------
-		
 		#Update button for updating books details
 		if 'update' in request.form:
 			bid=request.form['update']
@@ -205,9 +185,7 @@ def book():
 @app.route('/member_details',methods=['GET','POST'])
 def member():
 	mdata=mysql_query("SELECT * from members")
-
 	#----------------------------------------------------------------------------------------
-
 	#del button for deleting the member data from the database
 	if request.method=="POST":
 		if 'del' in request.form:
@@ -218,11 +196,8 @@ def member():
 				flash('Member Delete Successfully !','success')
 			else:
 				flash('Cannot Delete Member ! Issued book is not returned','danger')
-
 			return redirect(url_for('member'))
-
 		#----------------------------------------------------------------------------------------	
-
 		#update for updating member Data into the database
 		if 'update' in request.form:
 			mid=request.form['update']
@@ -232,32 +207,25 @@ def member():
 			mysql_query("UPDATE members SET member_name='{}',member_phone={},member_address='{}' where member_id={}".format(name,phone,address,mid))
 			flash('Member Details Updated Successfullyc !','success')
 			return redirect(url_for('member'))
-
 		#----------------------------------------------------------------------------------------	
-
 		#add button for adding new member into the database
 		if 'add' in request.form:
 			name=request.form['name']
 			phone=request.form['number']
 			email=request.form['email']
 			address=request.form['address']
-
 			#Checking if details are already available in the database or not
 			edata=mysql_query("SELECT member_id from members where member_email='{}' OR member_phone='{}' ".format(email,phone))
 			#---------------------------------------------------------------------
-			
 			#If details does not exists than new member will be added to the database
 			if len(edata)==0:
 				mysql_query("INSERT INTO members(member_name,member_phone,member_address,member_email) value('{}',{},'{}','{}')".format(name,phone,address,email))
-				flash('Member Registered Successfully !','success')
-			
+				flash('Member Registered Successfully !','success')	
 			#if details already exists than it will give a warning
 			else:
 				flash('Member Already Exists !','warning')
 			return redirect(url_for('member'))
-
 		#----------------------------------------------------------------------------------------	
-
 		#Settle button to settle the outstanding amount of the member
 		if 'settle' in request.form:
 			amount=request.form['amount']
@@ -279,10 +247,7 @@ def transaction():
 	tdata=mysql_query("SELECT * from transaction join members using(member_id) join books using(book_id) order by transaction_id DESC")
 	mdata=mysql_query("SELECT * from members")
 	bdata=mysql_query("SELECT * from books")
-
-
 	#----------------------------------------------------------------------------------------
-
 	if request.method=="POST":
 		#issueb button for issuing book to the members
 		if "issueb" in request.form:
@@ -302,26 +267,20 @@ def transaction():
 			
 			#condition to check if the book is in stock
 			if bstock[0]['stock']>=1:
-
 				#Earlier issued book is returned or not, or no book is issued yet
 				if len(noissue)==0 or returnb[0]['return_date'] is not None:
-					
 					#if the oustanding amount is less than 500 or not
 					if outstanding[0]['outstanding_amount']<500:
-
 						#if the user meets all the condition then the book will be issued
 						mysql_query("INSERT INTO transaction(book_id,member_id,issue_date) values({},{},'{}')".format(book,name,tdate))
 						mysql_query("UPDATE books set stock=stock-1 where book_id={}".format(book))
-						flash("Book Issued Successfully !",'success')
-					
+						flash("Book Issued Successfully !",'success')					
 					#Flashing message for exceeding outstanding amount	
 					else :
 						flash('Outstanding amount is exceeding Rs.500','warning')	
-
 				#Flashing message for book not returned
 				else:
-					flash('Prior issued book is not returned','warning')	
-			
+					flash('Prior issued book is not returned','warning')		
 			#Flashing message for book is out of stock
 			else:
 				flash('Book is out of stock', 'warning')	
@@ -338,33 +297,25 @@ def transaction():
 			rent=request.form['rent']
 			paid=request.form['paid']
 			mid=request.form['member']
-
 			#checking if the book rent is paid at the time of returning the book or not
 			#--------------------------------------------------------------------------
-
 			#If the rent is paid at the time of returning book
 			if paid=="yes":
 				#return date is set
-				mysql_query("UPDATE transaction set return_date='{}',rent={},rent_paid='{}' where transaction_id={}".format(rdate,rent,paid,tid))
-				
+				mysql_query("UPDATE transaction set return_date='{}',rent={},rent_paid='{}' where transaction_id={}".format(rdate,rent,paid,tid))	
 				#the total amount paid by user will be updated
-				mysql_query("UPDATE members set total_amount=total_amount+{} where member_id={}".format(rent,mid))
-				
+				mysql_query("UPDATE members set total_amount=total_amount+{} where member_id={}".format(rent,mid))				
 				#updating the book stocks
 				mysql_query("UPDATE books set stock=stock+1 where book_id={}".format(bid))
 				flash('Book returned Successfully and rent is paid', 'success')
-
 			#if the rent is not paid at the time of returning the book
 			elif paid=="no":
-
 				#outstanding amount is fechted from database
 				amt=mysql_query("SELECT outstanding_amount from members where members.member_id={}".format(mid))
 				rent1=int(rent)
 				final_amt=rent1+amt[0]['outstanding_amount']
-
 				#if the outstanding is getting greater the 500 when not paying the rent at the time
 				#of the return then the book cannot be returned member has to settle the outstanding amount
-
 				if final_amt<500:
 					mysql_query("UPDATE transaction set return_date='{}',rent={} where transaction_id={}".format(rdate,rent,tid))
 					mysql_query("UPDATE members set outstanding_amount=outstanding_amount+{} where member_id={}".format(rent,mid))
@@ -375,9 +326,7 @@ def transaction():
 			return redirect(url_for('transaction'))
 
 		#----------------------------------------------------------------------------------------
-
 		#settle button to settle the outstanding amount
-
 		if 'settle' in request.form:
 			amount=request.form['amount']
 			tid=request.form['settle']
