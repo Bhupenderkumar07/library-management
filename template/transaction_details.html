@@ -110,7 +110,7 @@
         {% endif %}
         <!-- if ended -->
 
-        {% if item['rent_paid']=='no'%}
+        {% if item['rent_paid']=='no' or item['return_date'] is none %}
         <td><button type="button" class="btn btn-secondary">Not Paid</button></td>
         {% else %}
         <td><button type="button" class="btn btn-success">Paid</button></td>

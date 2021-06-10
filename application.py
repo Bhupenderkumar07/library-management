@@ -19,10 +19,10 @@ app = Flask(__name__,template_folder ='template')
 app.secret_key = os.urandom(34)
 
 
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = ''
-app.config['MYSQL_DATABASE_DB'] = 'frappe'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+app.config['MYSQL_DATABASE_USER'] = 'sql6418296'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'SMyKEWns8F'
+app.config['MYSQL_DATABASE_DB'] = 'sql6418296'
+app.config['MYSQL_DATABASE_HOST'] = 'sql6.freesqldatabase.com'
 mysql = MySQL(app)
 
 
@@ -137,6 +137,9 @@ def book():
 							sqldt=(x['message'][i]['bookID'],x['message'][i]['title'],x['message'][i]['authors'],x['message'][i]['average_rating'],x['message'][i]['isbn'],x['message'][i]['isbn13'],x['message'][i]['language_code'],x['message'][i]['  num_pages'],x['message'][i]['ratings_count'],x['message'][i]['text_reviews_count'],time,x['message'][i]['publisher'])
 							cursor.execute(sql,sqldt)
 							connection.commit()
+						#-------------------------------------------------------------------------------------
+							
+						#Stock Management is done through the api data :- Depending of the repeated details
 						
 						#If the details exists in the database
 						else:
