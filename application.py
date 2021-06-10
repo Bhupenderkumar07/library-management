@@ -254,17 +254,13 @@ def transaction():
 			name=request.form['name']
 			book=request.form['book']
 			tdate=date.today()
-
 			#After fetching the details checking if the required book is in stock or not
 			bstock=mysql_query("SELECT stock from books where book_id={}".format(book))
-
 			#Checking the outstanding amount of the member who is issuing the book
 			outstanding=mysql_query("SELECT outstanding_amount from members where member_id={}".format(name))
-			
 			#Checking if the earlier issued book is returned or not
 			returnb=mysql_query("SELECT return_date from transaction where member_id={} order by transaction_id DESC limit 1".format(name))
 			noissue=mysql_query("SELECT transaction_id from transaction where member_id={}".format(name))
-			
 			#condition to check if the book is in stock
 			if bstock[0]['stock']>=1:
 				#Earlier issued book is returned or not, or no book is issued yet
@@ -285,9 +281,7 @@ def transaction():
 			else:
 				flash('Book is out of stock', 'warning')	
 			return redirect(url_for('transaction'))
-
 		#----------------------------------------------------------------------------------------	
-
 		#return button for returning the book
 		if 'return' in request.form:
 			tid=request.form['return']
@@ -324,7 +318,6 @@ def transaction():
 				else:
 					flash('Cannot Return Book ! Outstanding amount is exceeding 500','danger')
 			return redirect(url_for('transaction'))
-
 		#----------------------------------------------------------------------------------------
 		#settle button to settle the outstanding amount
 		if 'settle' in request.form:
