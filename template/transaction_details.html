@@ -65,15 +65,16 @@
 
 <!-- Ending for navbar -->
 
-
-
+<div class="container-fluid">
+<div class="row">
+  <div class="col">
 <div class="card" style="width:1150px;">
   <div class="card-body">
     <form method="POST" action="{{url_for('transaction')}}">
-
+      <div class="table-responsive">
       <!-- Table for displaying details -->
       <table class="table table-hover table-bordered" id="Mytable">
-	     <thead style="font-weight: bold; background-color: lightgrey;">
+	     <thead style="font-weight: bold;"  class="text-primary">
 		      <td>Transaction Id</td>
 		      <td>Book Id</td>
 		      <td>Member Id</td>
@@ -88,9 +89,9 @@
 	{% for item in tdata %}
       <tbody>
 	     <tr>
-		    <td>{{ item['transaction_id' ] }}</td>
-		    <td>{{ item['book_id'] }}</td>
-		    <td>{{ item['member_id'] }}</td>
+		    <td style="font-weight: bold;" class="text-danger">{{ item['transaction_id' ] }}</td>
+		    <td style="font-weight: bold;" class="text-info">{{ item['book_id'] }}</td>
+		    <td style="font-weight: bold;" class="text-success">{{ item['member_id'] }}</td>
         <td>{{ item['member_name'] }}</td>
 		    <td>{{ item['issue_date'] }}</td>
 
@@ -133,8 +134,12 @@
     </tbody>
 {% endfor %}
       </table>
+    </div>
     </form>
   </div>
+</div>
+</div>
+</div>
 </div>
 
 <!-- Modal body for returning book  -->

@@ -41,27 +41,42 @@
     </form>
 
 <!-- Ending for navbar -->
+{% if maxdata or bookdata%}
 
 <div class="row">
         <iframe id="txtArea1" style="display:none"></iframe>
         &nbsp
         &nbsp&nbsp
-        <div class="col-0">
-            <button id="pdf" class="btn btn-primary" name="Report" onclick="printDiv()">Save as PDF &nbsp<i class="fa fa-file-pdf"></i></button>
-        </div>
         <div class="col">
+            <button id="pdf" class="btn btn-primary" name="Report" onclick="printDiv()">Save as PDF &nbsp<i class="fa fa-file-pdf"></i></button>
+        
             <button id="excel" class="btn btn-primary" name="excel" onclick="fnExcelReport();">Save as Excelsheet &nbsp<i class="fa fa-file-excel"></i></button>
+
+              {% if tvalue %}
+          <button class="btn btn-primary" type="button" onclick="charts();">View Chart</button>
+          {%elif tissue %}
+         <button class="btn btn-primary" type="button" onclick="scharts();">View Chart</button>
+          {% endif %}
+        
         </div>
     </div>
+  {% endif %} 
+
+<div class="container-fluid"> 
+<div class="row">
+<div class="col"> 
+
 <div id="printdivision">
-  
-<div class="card" style="width:1000px;" >
+<form method="POST" action="{{url_for('report')}}">
+ {% if maxdata %}
+<div class="card" style="width:1100px;">
   <div class="card-body">
-    <form method="POST" action="{{url_for('report')}}">
-      {% if maxdata %}
+    
+       <div class="table-responsive">
+       
       <!-- Table for displaying data -->
       <table class="table table-hover table-bordered" id="Mytable">
-	     <thead style="font-weight: bold; background-color: lightgrey;">
+	     <thead style="font-weight: bold;" class="text-primary">
 		      <td>Member Id</td>
 		      <td>Member Name</td>
 		      <td>Member Phone</td>
@@ -73,52 +88,73 @@
 	{% for i in maxdata %}
       <tbody >
 	     <tr>
-		    <td>{{ i['member_id' ] }}</td>
+		    <td style="font-weight: bold;" class="text-danger">{{ i['member_id' ] }}</td>
 		    <td>{{ i['member_name'] }}</td>
 		    <td>{{ i['member_phone'] }}</td>
-            <td>{{ i['member_email'] }}</td>
+        <td>{{ i['member_email'] }}</td>
 		    <td>{{ i['member_address'] }}</td>
-            <td>{{i['total_amount']}}</td>
+        <td style="font-weight: bold;" class="text-success">{{i['total_amount']}}</td>
 	   </tr>
     </tbody>
 {% endfor %}
       </table>
+    </div>
+  </div>
+</div>
      
   {%elif bookdata %}
-  
+
+      <div class="card" style="width:1100px;">
+        <div class="card-body">
+        <div class="table-responsive">
       <!-- Table for displaying data -->
       <table class="table table-hover table-bordered" id="Mytable" >
-       <thead style="font-weight: bold; background-color: lightgrey;">
+       <thead style="font-weight: bold;" class="text-primary">
           <td>Book Id</td>
           <td>Title</td>
           <td>Publisher</td>
-          <td>Total Issued</td>
+          <td>No of times Issued</td>
           <td>In Stock</td>
           <td>Total Books</td>
+
           
      </thead>
   {% for i in bookdata %}
       <tbody >
        <tr>
-        <td>{{ i['book_id' ] }}</td>
+        <td style="font-weight: bold;" class="text-danger">{{ i['book_id' ] }}</td>
         <td>{{ i['title'] }}</td>
         <td>{{ i['publisher'] }}</td>
-        <td>{{ i['issue'] }}</td>
+        <td style="font-weight: bold;" class="text-success">{{ i['count(t.book_id)'] }}</td>
         <td>{{ i['stock'] }}</td>
         <td>{{i['total']}}</td>
      </tr>
     </tbody>
 {% endfor %}
       </table>
-      
-    
+         
 {%endif%}
-
-</form>
+</div>
   </div>
 </div>
+</form>
 </div>
-
+{% if maxdata %}
+<div class="card" style="width:1100px;">
+  <div class="card-body">
+    <canvas id="fChart" width="400" height="100"></canvas>
+  </div>
+  </div>
+  {% elif bookdata%}
+  <div class="card">
+  <div class="card-body" style="width:1100px;">
+    <canvas id="sChart" width="400" height="100"></canvas>
+  </div>
+  </div>
+  {% endif %}
+</div>
+</div>
+</div>
 
 
 <!-- ------------------------------------------------------------------------------------ -->
@@ -215,4 +251,93 @@ function myFunction() {
 
 <!-- ------------------------------------------------------------------------------------ -->
 
+ <!-- Function for displaying chart for first report -->
+
+<script type="text/javascript">
+  function charts()
+  {
+    var speedCanvas = document.getElementById("fChart");
+
+    var dataFirst = {
+      data:[],
+      data:{{tvalue|safe}},
+      fill: false,
+      borderColor: '#fbc658',
+      backgroundColor: 'transparent',
+      pointBorderColor: '#fbc658',
+      pointRadius: 4,
+      pointHoverRadius: 4,
+      pointBorderWidth: 8,
+    };
+    console.log({{tvalue}});
+
+    var speedData = {
+      labels: [],
+      labels:{{mname|safe}},
+      datasets: [dataFirst]
+    };
+
+    var chartOptions = {
+      legend: {
+        display: false,
+        position: 'top'
+      }
+    };
+
+    var lineChart = new Chart(speedCanvas, {
+      type: 'line',
+      hover: false,
+      data: speedData,
+      options: chartOptions
+    });
+  }
+</script>
+ <!-- Function ended -->
+
+ <!-- ---------------------------------------------------------------------------------------- -->
+
+ <!--  Function for displaying chart for second record -->
+
+<script type="text/javascript">
+  function scharts()
+  {
+    var speedCanvas = document.getElementById("sChart");
+
+    var dataFirst = {
+      data:[],
+      data:{{tissue|safe}},
+      fill: false,
+      borderColor: '#fbc658',
+      backgroundColor: 'transparent',
+      pointBorderColor: '#fbc658',
+      pointRadius: 4,
+      pointHoverRadius: 4,
+      pointBorderWidth: 8,
+    };
+    console.log({{tissue}});
+
+    var speedData = {
+      labels: [],
+      labels:{{bname|safe}},
+      datasets: [dataFirst]
+    };
+
+    var chartOptions = {
+      legend: {
+        display: false,
+        position: 'top'
+      }
+    };
+
+    var lineChart = new Chart(speedCanvas, {
+      type: 'line',
+      hover: false,
+      data: speedData,
+      options: chartOptions
+    });
+  }
+</script>
+
+
+ <!-- Function ended -->
 {%endblock%}

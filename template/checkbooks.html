@@ -82,30 +82,33 @@
 
       <div class="content">
         <div class="row"> 
-          <div class="col-md-8">
+          <div class="col">
               
   <div class="card" style="width:1150px;">
   <div class="card-body">
     <form method="POST" action="{{url_for('checkbooks')}}">
       <table class="table table-hover table-bordered" id="Mytable">
-       <thead style="font-weight: bold; background-color: lightgrey;">
+       <thead style="font-weight: bold;"class="text-primary">
           <td>Book Id</td>
           <td>Title</td>
           <td>Author</td>
           <td>Ratings</td>
           <td>Publisher</td>
           <td>Publication Date</td>
+          <td>Stock</td>
           
      </thead>
   {% for i in bdata %}
       <tbody>
        <tr>
-        <td>{{ i['book_id' ] }}</td>
+        <td style="font-weight: bold;" class="text-danger">{{ i['book_id' ] }}</td>
         <td>{{ i['title'] }}</td>
         <td>{{ i['authors'] }}</td>
         <td>{{ i['average_rating'] }}</td>
         <td>{{ i['publisher'] }}</td>
         <td>{{ i['publication_date'] }}</td>
+        <td>{{ i['stock'] }}</td>
+
      </tr>
     </tbody>
 {% endfor %}

@@ -205,7 +205,7 @@ def member():
 			phone=request.form['number']
 			address=request.form['address']
 			mysql_query("UPDATE members SET member_name='{}',member_phone={},member_address='{}' where member_id={}".format(name,phone,address,mid))
-			flash('Member Details Updated Successfullyc !','success')
+			flash('Member Details Updated Successfully !','success')
 			return redirect(url_for('member'))
 		#----------------------------------------------------------------------------------------	
 		#add button for adding new member into the database
@@ -356,12 +356,24 @@ def transaction():
 def report():
 	if request.method=="POST":
 		if 'report1' in request.form:
+			mname=[]
+			tvalue=[]
 			maxdata=mysql_query("SELECT * from members order by total_amount DESC")
-			return render_template('reports.html',maxdata=maxdata)
-
+			#converting values into list for the chart
+			for x in maxdata:
+				mname.append(x['member_name'])
+				tvalue.append(x['total_amount'])
+			return render_template('reports.html',maxdata=maxdata,mname=mname,tvalue=tvalue)
+		#the most popular book is taken out on the total issued number 
 		if 'report2' in request.form:
-			bookdata=mysql_query("SELECT *,total-stock AS issue FROM books order by issue DESC")
-			return render_template('reports.html',bookdata=bookdata)
+			tissue=[]
+			bname=[]
+			bookdata=mysql_query("SELECT b.book_id,b.title,b.authors,b.publication_date,b.stock,b.total,b.publisher,count(t.book_id) from transaction t,books b where b.book_id = t.book_id group by t.book_id order by count(t.book_id) DESC")
+			#converting values into list for the chart
+			for i in bookdata:
+				tissue.append(i['count(t.book_id)'])
+				bname.append(i['title'])
+			return render_template('reports.html',bookdata=bookdata,tissue=tissue,bname=bname)
 	return render_template('reports.html')
 
 
@@ -381,7 +393,7 @@ def report():
 
 #---------------------------------------------------------------------------------------------
 #Function for Guest view
-@app.route('/login_user',methods=['GET','POST'])
+@app.route('/login',methods=['GET','POST'])
 def login():
 	if request.method=="POST":
 		if 'check' in request.form:
