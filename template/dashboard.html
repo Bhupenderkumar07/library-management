@@ -5,7 +5,7 @@ Main Dashboard
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Library Management</title>
   <!--     Fonts and icons     -->
@@ -16,7 +16,7 @@ Main Dashboard
   <link href="{{url_for('static',filename='dashboard/css/paper-dashboard.css')}}" rel="stylesheet" />
 </head>
 
-<body>
+<body onload="zoom()">
   <div class="wrapper">
     <div class="sidebar" data-color="white" data-active-color="danger">
       <div class="logo">
@@ -87,6 +87,12 @@ Main Dashboard
   </script>
 
 <!-- Function ended -->
+<script type="text/javascript">
+   function zoom() {
+            document.body.style.zoom = "100%" 
+        }
+
+</script>
 
 </body>
 </html>
