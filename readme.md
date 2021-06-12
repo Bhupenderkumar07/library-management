@@ -42,7 +42,6 @@ Book Issuing Panel :
 
 ![image](https://user-images.githubusercontent.com/61752809/121776063-87e7ed00-cba8-11eb-806c-c8b74750e081.png)
 
-![image](https://user-images.githubusercontent.com/61752809/121776070-8fa79180-cba8-11eb-970a-1c3626c902f0.png)
 
  
 Outstanding amount will not be greater than under any circumstances.
