@@ -18,9 +18,9 @@ app = Flask(__name__,template_folder ='template')
 
 app.secret_key = os.urandom(34)
 
-app.config['MYSQL_DATABASE_USER'] = 'sql6418296'
+app.config['MYSQL_DATABASE_USER'] = 'sql6419928'
 app.config['MYSQL_DATABASE_PASSWORD'] =os.environ.get('MYSQL_DATABASE_PASSWORD')
-app.config['MYSQL_DATABASE_DB'] = 'sql6418296'
+app.config['MYSQL_DATABASE_DB'] = 'sql6419928'
 app.config['MYSQL_DATABASE_HOST'] = 'sql6.freesqldatabase.com'
 mysql = MySQL(app)
 
