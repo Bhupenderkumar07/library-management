@@ -81,9 +81,9 @@ CREATE TABLE `members` (
 --
 
 INSERT INTO `members` (`member_id`, `member_name`, `member_phone`, `member_email`, `member_address`, `outstanding_amount`, `total_amount`) VALUES
-(63, 'bhupender', 2147483647, 'bhupenderkumarcr@gmail.com', 'ahmedabad', 100, 3779),
-(66, 'bhup', 78456941, 'b@gmail.com', 'jhansi', 0, 140),
-(67, 'bhup', 78456941, 'b@gmail.com', 'jhansi', 0, 590);
+(63, 'bhupender', 7896532100, 'bhupenderkumarcr@gmail.com', 'ahmedabad', 100, 3779),
+(66, 'chandradeep', 8956023362, 'chandradeep213@gmail.com, 'jhansi', 0, 140),
+(67, 'vaibhav', , 'vkcvaibhav18@gmail.com', 'jhansi', 0, 590);
 
 -- --------------------------------------------------------
 
