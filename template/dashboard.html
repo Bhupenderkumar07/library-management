@@ -14,6 +14,10 @@ Main Dashboard
 </head>
 
 <body onload="zoom()">
+  <div id="overlay">
+     <img src="loading.gif" alt="Loading" />
+     Loading...
+</div>
   <div class="wrapper">
     <div class="sidebar" data-color="white" data-active-color="danger">
       <div class="logo">
@@ -91,5 +95,12 @@ Main Dashboard
 
 </script>
 
+<script type="text/javascript">
+  
+  $(window).load(function(){
+   $('#overlay').fadeOut();
+});
+
+</script>
 </body>
 </html>
